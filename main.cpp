@@ -59,7 +59,9 @@ int main(int argc, char *argv[]) {
 	QGuiApplication a(argc, argv);
 	try
 	{
-		AddTextWatermarkToImageList("D:/test images", "D:/test images result");
+		QDir sourceDir("D:/test images");
+		QDir resDir(sourceDir.absoluteFilePath("../") + QDir::separator() + sourceDir.dirName() + QObject::trUtf8(" водяной знак"));
+		AddTextWatermarkToImageList(sourceDir, resDir);
 	} catch (FileSavingFailed ex) {
 		qCritical() << QObject::trUtf8("Не могу сохранить файл %0").arg(ex.fileName()) << endl;
 	} catch (DirCreatingFailed ex) {
