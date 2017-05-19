@@ -29,13 +29,20 @@ void AddTextWatermarkToImage(const QFileInfo &file, const QDir &resDir) {
 	}
 }
 
+class DirCreatingFailed : public std::runtime_error {
+public:
+	DirCreatingFailed (const QString &dirName) : std::runtime_error("File saving failed."), _dirName(dirName) {}
+	const QString &dirName() { return _dirName; }
+private:
+	QString _dirName;
+};
+
 void AddTextWatermarkToImageList(const QString &dirPath, const QString &resDirPath) {
 	QDir directory(dirPath);
 	QDir resDir(resDirPath);
 	if(!resDir.exists()) {
 		if(!resDir.mkpath(resDirPath)) {
-			qCritical() << QObject::trUtf8("Не могу создать каталог %0").arg(resDirPath) << endl;
-			return;
+			throw DirCreatingFailed(resDirPath);
 		}
 	}
 	auto fileList = directory.entryInfoList({"*.jpg"});
@@ -50,6 +57,8 @@ int main(int argc, char *argv[]) {
 	{
 		AddTextWatermarkToImageList("D:/test images", "D:/test images result");
 	} catch (FileSavingFailed ex) {
-		qCritical() << QObject::trUtf8("Не могу сохранить файл %0").arg(ex.fileName());
+		qCritical() << QObject::trUtf8("Не могу сохранить файл %0").arg(ex.fileName()) << endl;
+	} catch (DirCreatingFailed ex) {
+		qCritical() << QObject::trUtf8("Не могу создать каталог %0").arg(ex.dirName()) << endl;
 	}
 }
