@@ -1,16 +1,17 @@
 #include <QCoreApplication>
-#include <iostream>
+#include <QDebug>
+#include <QDir>
+#include <QString>
+#include <QStringList>
 
-int main(int argc, char *argv[])
-{
-	using namespace std;
+void AddTextWatermark(const QStringList &fileList) {
+	for (auto name: fileList) {
+		qDebug() << name << endl;
+	}
+}
 
-	cout << "Start app." << endl;
-	QCoreApplication a(argc, argv);
-
-	cout << "Exec QCoreApplication" << endl;
-
-	return a.exec();
-
-	cout << "Exit" << endl;
+int main(int argc, char *argv[]) {
+	QDir directory("D:/test images");
+	auto fileList = directory.entryList({"*.jpg"});
+	AddTextWatermark(fileList);
 }
