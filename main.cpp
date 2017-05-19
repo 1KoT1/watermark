@@ -39,18 +39,20 @@ private:
 	QString _dirName;
 };
 
-void AddTextWatermarkToImageList(const QString &dirPath, const QString &resDirPath) {
-	QDir directory(dirPath);
-	QDir resDir(resDirPath);
+void AddTextWatermarkToImageList(const QDir &directory, const QDir &resDir) {
 	if(!resDir.exists()) {
-		if(!resDir.mkpath(resDirPath)) {
-			throw DirCreatingFailed(resDirPath);
+		if(!resDir.mkpath(resDir.absolutePath())) {
+			throw DirCreatingFailed(resDir.absolutePath());
 		}
 	}
 	auto fileList = directory.entryInfoList({"*.jpg"});
 	for (auto file: fileList) {
 		AddTextWatermarkToImage(file, resDir);
 	}
+}
+
+void AddTextWatermarkToImageList(const QString &dirPath, const QString &resDirPath) {
+	AddTextWatermarkToImageList(QDir(dirPath), QDir(resDirPath));
 }
 
 int main(int argc, char *argv[]) {
