@@ -21,8 +21,10 @@ void AddTextWatermarkToImage(const QFileInfo &file, const QDir &resDir) {
 	QImage image(file.absoluteFilePath());
 	QPainter p(&image);
 	p.setPen(QPen(Qt::white));
-	p.setFont(QFont("Times", 10));
-	p.drawText(0, 10, QObject::trUtf8("Zarubenko Julia | https://vk.com/phzarubenkoiuliia |"));
+	p.setFont(QFont("Times", image.width() * image.height() / 300000));
+	p.translate(image.width(), image.height());
+	p.rotate(-90);
+	p.drawText(0, 0, QObject::trUtf8("Zarubenko Julia | https://vk.com/phzarubenkoiuliia |"));
 	auto resFileName = resDir.filePath(file.fileName());
 	if(!image.save(resFileName)) {
 		throw FileSavingFailed(resFileName);
