@@ -57,9 +57,13 @@ void AddTextWatermarkToImageList(const QString &dirPath, const QString &resDirPa
 
 int main(int argc, char *argv[]) {
 	QGuiApplication a(argc, argv);
-	try
-	{
-		QDir sourceDir("D:/test images");
+	try {
+		if(argc <= 1) 	{
+			qCritical() << QObject::trUtf8("Необходимо указать каталог в параметре запуска.") << endl;
+			return 1;
+		}
+
+		QDir sourceDir(argv[1]);
 		QDir resDir(sourceDir.absoluteFilePath("../") + QDir::separator() + sourceDir.dirName() + QObject::trUtf8(" водяной знак"));
 		AddTextWatermarkToImageList(sourceDir, resDir);
 	} catch (FileSavingFailed ex) {
