@@ -6,6 +6,7 @@
 #include <QPointF>
 #include <QString>
 #include <QStringList>
+#include <QTextCodec>
 #include <exception>
 
 class FileSavingFailed : public std::runtime_error {
@@ -55,15 +56,20 @@ void AddTextWatermarkToImageList(const QString &dirPath, const QString &resDirPa
 	AddTextWatermarkToImageList(QDir(dirPath), QDir(resDirPath));
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {	
+#ifdef Q_OS_WIN32
+	  QTextCodec::setCodecForLocale(QTextCodec::codecForName("IBM 866"));
+#endif
+
 	QGuiApplication a(argc, argv);
 	try {
-		if(argc <= 1) 	{
+		auto args = a.arguments();
+		if(args.count() <= 1) 	{
 			qCritical() << QObject::trUtf8("Необходимо указать каталог в параметре запуска.") << endl;
 			return 1;
 		}
 
-		QDir sourceDir(argv[1]);
+		QDir sourceDir(args[1]);
 		QDir resDir(sourceDir.absoluteFilePath("../") + QDir::separator() + sourceDir.dirName() + QObject::trUtf8(" водяной знак"));
 		AddTextWatermarkToImageList(sourceDir, resDir);
 	} catch (FileSavingFailed ex) {
