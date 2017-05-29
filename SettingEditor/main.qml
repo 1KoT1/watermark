@@ -6,32 +6,69 @@ ApplicationWindow {
 	visible: true
 	width: 640
 	height: 480
-	title: qsTr("Hello World")
+	title: qsTr("Настроить водяной знак")
 
-	SwipeView {
-		id: swipeView
-		anchors.fill: parent
-		currentIndex: tabBar.currentIndex
+	GridLayout {
+		id: gridLayout
+		height: 100
+		anchors.right: parent.right
+	anchors.left: parent.left
+	anchors.top: parent.top
+	  columns: 1
+		rows: 3
 
-		Page1 {
+		Label {
+			id: label
+			text: qsTr("Текст водяного знака")
+			Layout.row: 1
+			Layout.column: 1
+			Layout.fillWidth: true
 		}
 
-		Page {
-			Label {
-				text: qsTr("Second page")
-				anchors.centerIn: parent
-			}
-		}
-	}
+		TextField {
+			id: watermarkText
+			Layout.row: 1
+			Layout.column: 2
+			Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+			Layout.fillWidth: true
 
-	footer: TabBar {
-		id: tabBar
-		currentIndex: swipeView.currentIndex
-		TabButton {
-			text: qsTr("First")
+			text: settings.watermarkText
 		}
-		TabButton {
-			text: qsTr("Second")
+
+		Label {
+			id: label1
+			text: qsTr("Коэффициент размера")
+			Layout.row: 2
+			Layout.column: 1
+			Layout.fillWidth: true
+		}
+
+		TextField {
+			id: sizeCoef
+			Layout.row: 2
+			Layout.column: 2
+			Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+			Layout.fillWidth: true
+
+			text: settings.sizeCoef
+		}
+
+		Label {
+			id: label2
+			text: qsTr("Шрифт")
+			Layout.row: 3
+			Layout.column: 1
+			Layout.fillWidth: true
+		}
+
+		TextField {
+			id: watermarkFont
+			Layout.row: 3
+			Layout.column: 2
+			Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+			Layout.fillWidth: true
+
+			text: settings.watermarkFont
 		}
 	}
 }
