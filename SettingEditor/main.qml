@@ -3,6 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 
 ApplicationWindow {
+	id: applicationWindow
 	visible: true
 	width: 640
 	height: 480
@@ -12,9 +13,9 @@ ApplicationWindow {
 		id: gridLayout
 		height: 100
 		anchors.right: parent.right
-	anchors.left: parent.left
-	anchors.top: parent.top
-	  columns: 1
+		anchors.left: parent.left
+		anchors.top: parent.top
+		columns: 1
 		rows: 3
 
 		Label {
@@ -69,6 +70,22 @@ ApplicationWindow {
 			Layout.fillWidth: true
 
 			text: settings.watermarkFont
+		}
+	}
+
+	Button {
+		id: button
+		x: 349
+		y: 356
+		text: qsTr("Сохранить")
+		anchors.bottom: parent.bottom
+		anchors.right: parent.right
+
+		onClicked: {
+			settings.sizeCoef = sizeCoef.text;
+			settings.watermarkFont = watermarkFont.text;
+			settings.watermarkText = watermarkText.text;
+			settings.save();
 		}
 	}
 }

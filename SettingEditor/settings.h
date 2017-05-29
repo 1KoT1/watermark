@@ -23,6 +23,8 @@ public:
 
 	const QString &watermarkFont() const;
 	void setWatermarkFont(const QString &watermarkFont);
+
+	Q_INVOKABLE void save();
 signals:
 	void witermarkTextChanged();
 	void sizeCoefChanged();

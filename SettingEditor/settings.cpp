@@ -17,7 +17,7 @@ Settings::Settings(const QString &watermarkText, int sizeCoef, const QString &wa
 Settings::Settings(QObject *parent) :
   QObject(parent)
 {
-	QSettings settings("Pochkaenko", "watermark");
+	QSettings settings;
 	_watermarkText = settings.value("watermarkText", defaultWatermarkText).toString();
 	_sizeCoef = settings.value("sizeCoef", defaultSizeCoef).toInt();
 	_watermarkFont = settings.value("watermarkFont", defaultWatermarkFont).toString();
@@ -53,4 +53,11 @@ void Settings::setWatermarkFont(const QString &watermarkFont) {
 		_watermarkFont = watermarkFont;
 		emit watermarkFontChanged();
 	}
+}
+
+void Settings::save() {
+	QSettings settings;
+	settings.setValue("watermarkText", _watermarkText);
+	settings.setValue("sizeCoef", _sizeCoef);
+	settings.setValue("watermarkFont", _watermarkFont);
 }

@@ -5,6 +5,11 @@
 
 int main(int argc, char *argv[]) {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+	QCoreApplication::setOrganizationName("Pochkaenko	");
+	QCoreApplication::setOrganizationDomain("pochkaenko.ru");
+	QCoreApplication::setApplicationName("Watermark");
+
 	QGuiApplication app(argc, argv);
 
 	QQmlApplicationEngine engine;
