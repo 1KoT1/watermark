@@ -8,6 +8,11 @@
 #include <QStringList>
 #include <QTextCodec>
 #include <exception>
+#include <QSettings>
+
+const QString defaultWatermarkText = QObject::trUtf8("Zarubenko Julia | https://vk.com/phzarubenkoiuliia |");
+const int defaultSizeCoef = 70;
+const QString defaultWatermarkFont = QObject::trUtf8("Times");
 
 class FileSavingFailed : public std::runtime_error {
 public:
@@ -17,15 +22,15 @@ private:
 	QString _fileName;
 };
 
-void AddTextWatermarkToImage(const QFileInfo &file, const QDir &resDir) {
+void AddTextWatermarkToImage(const QFileInfo &file, const QDir &resDir, const QString &watermarkText, int sizeCoef, const QString &watermarkFont) {
 	qDebug() << file.absoluteFilePath() << endl;
 	QImage image(file.absoluteFilePath());
 	QPainter p(&image);
 	p.setPen(QPen(Qt::white));
-	p.setFont(QFont("Times", image.height() / 70));
+	p.setFont(QFont(watermarkFont, image.height() / sizeCoef));
 	p.translate(image.width(), image.height());
 	p.rotate(-90);
-	p.drawText(0, 0, QObject::trUtf8("Zarubenko Julia | https://vk.com/phzarubenkoiuliia |"));
+	p.drawText(0, 0, watermarkText);
 	auto resFileName = resDir.filePath(file.fileName());
 	if(!image.save(resFileName)) {
 		throw FileSavingFailed(resFileName);
@@ -41,14 +46,21 @@ private:
 };
 
 void AddTextWatermarkToImageList(const QDir &directory, const QDir &resDir) {
+
 	if(!resDir.exists()) {
 		if(!resDir.mkpath(resDir.absolutePath())) {
 			throw DirCreatingFailed(resDir.absolutePath());
 		}
 	}
+
+	QSettings settings;
+	auto watermarkText = settings.value("watermarkText", defaultWatermarkText).toString();
+	auto sizeCoef = settings.value("sizeCoef", defaultSizeCoef).toInt();
+	auto watermarkFont = settings.value("watermarkFont", defaultWatermarkFont).toString();
+
 	auto fileList = directory.entryInfoList({"*.jpg"});
 	for (auto file: fileList) {
-		AddTextWatermarkToImage(file, resDir);
+		AddTextWatermarkToImage(file, resDir, watermarkText, sizeCoef, watermarkFont);
 	}
 }
 
@@ -58,8 +70,12 @@ void AddTextWatermarkToImageList(const QString &dirPath, const QString &resDirPa
 
 int main(int argc, char *argv[]) {	
 #ifdef Q_OS_WIN32
-	  QTextCodec::setCodecForLocale(QTextCodec::codecForName("IBM 866"));
-#endif
+	QTextCodec::setCodecForLocale(QTextCodec::codecForName("IBM 866"));
+#endif		
+
+	QCoreApplication::setOrganizationName("Pochkaenko	");
+	QCoreApplication::setOrganizationDomain("pochkaenko.ru");
+	QCoreApplication::setApplicationName("Watermark");
 
 	QGuiApplication a(argc, argv);
 	try {
