@@ -13,6 +13,7 @@ class Settings : public QObject {
 
 public:
 	explicit Settings(const QString &watermarkText, int sizeCoef, const QString &watermarkFont, QObject *parent = nullptr);
+	explicit Settings(QObject *parent = nullptr);
 
 	const QString &watermarkText() const;
 	void setWitermarkText(const QString &watermarkText);

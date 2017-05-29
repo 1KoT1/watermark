@@ -1,4 +1,9 @@
 #include "settings.h"
+#include <QSettings>
+
+const QString defaultWatermarkText = QObject::trUtf8("Zarubenko Julia | https://vk.com/phzarubenkoiuliia |");
+const int defaultSizeCoef = 70;
+const QString defaultWatermarkFont = QObject::trUtf8("Times");
 
 Settings::Settings(const QString &watermarkText, int sizeCoef, const QString &watermarkFont, QObject *parent) :
   QObject(parent),
@@ -7,6 +12,15 @@ Settings::Settings(const QString &watermarkText, int sizeCoef, const QString &wa
   _watermarkFont(watermarkFont)
 {
 
+}
+
+Settings::Settings(QObject *parent) :
+  QObject(parent)
+{
+	QSettings settings("Pochkaenko", "watermark");
+	_watermarkText = settings.value("watermarkText", defaultWatermarkText).toString();
+	_sizeCoef = settings.value("sizeCoef", defaultSizeCoef).toInt();
+	_watermarkFont = settings.value("watermarkFont", defaultWatermarkFont).toString();
 }
 
 const QString & Settings::watermarkText() const {

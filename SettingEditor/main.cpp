@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
 	QGuiApplication app(argc, argv);
 
 	QQmlApplicationEngine engine;
-	Settings settings("Zarubenko Julia | https://vk.com/phzarubenkoiuliia |", 70, "Times");
+	Settings settings;
 	engine.rootContext()->setContextProperty("settings", &settings);
 	engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
