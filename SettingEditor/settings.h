@@ -8,7 +8,10 @@ class Settings : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString watermarkText READ watermarkText WRITE setWitermarkText NOTIFY witermarkTextChanged)
 	Q_PROPERTY(int sizeCoef READ sizeCoef WRITE setSizeCoef NOTIFY sizeCoefChanged)
-	Q_PROPERTY(QString watermarkFont READ watermarkFont WRITE setWatermarkFont NOTIFY watermarkFontChanged)
+	Q_PROPERTY(QString watermarkFont READ watermarkFont NOTIFY watermarkFontChanged)
+	Q_PROPERTY(int watermarkFontId READ watermarkFontId WRITE setWatermarkFontId NOTIFY watermarkFontChanged)
+
+	Q_PROPERTY(QStringList availableFonts READ availableFonts)
 
 
 public:
@@ -22,7 +25,10 @@ public:
 	void setSizeCoef(int sizeCoef);
 
 	const QString &watermarkFont() const;
-	void setWatermarkFont(const QString &watermarkFont);
+	int watermarkFontId() const;
+	void setWatermarkFontId(int watermarkFontId);
+
+	QStringList availableFonts() const;
 
 	Q_INVOKABLE void save();
 signals:
@@ -32,9 +38,10 @@ signals:
 
 public slots:
 private:
+	QStringList _fonts;
 	QString _watermarkText;
 	int _sizeCoef;
-	QString _watermarkFont;
+	int _watermarkFontId;
 };
 
 #endif // SETTINGS_H

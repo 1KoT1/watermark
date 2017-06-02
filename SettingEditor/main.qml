@@ -62,14 +62,34 @@ ApplicationWindow {
 			Layout.fillWidth: true
 		}
 
-		TextField {
+		ComboBox {
 			id: watermarkFont
 			Layout.row: 3
 			Layout.column: 2
 			Layout.alignment: Qt.AlignLeft | Qt.AlignTop
 			Layout.fillWidth: true
 
-			text: settings.watermarkFont
+			delegate: ItemDelegate {
+				        width: watermarkFont.width
+								contentItem: Text {
+									  text: modelData
+										font.family: modelData
+								}
+								highlighted: watermarkFont.highlightedIndex == index
+			      }
+
+			contentItem: Text {
+				  leftPadding: 0
+					rightPadding: watermarkFont.indicator.width + watermarkFont.spacing
+
+					text: watermarkFont.displayText
+					font.family: watermarkFont.displayText
+					horizontalAlignment: Text.AlignLeft
+					verticalAlignment: Text.AlignVCenter
+			}
+
+			model: settings.availableFonts
+			currentIndex: settings.watermarkFontId
 		}
 	}
 
@@ -83,7 +103,7 @@ ApplicationWindow {
 
 		onClicked: {
 			settings.sizeCoef = sizeCoef.text;
-			settings.watermarkFont = watermarkFont.text;
+			settings.watermarkFontId = watermarkFont.currentIndex;
 			settings.watermarkText = watermarkText.text;
 			settings.save();
 		}
