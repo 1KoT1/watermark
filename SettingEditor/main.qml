@@ -9,103 +9,109 @@ ApplicationWindow {
 	height: 480
 	title: qsTr("Настроить водяной знак")
 
-	GridLayout {
-		id: gridLayout
-		height: 100
-		anchors.right: parent.right
-		anchors.left: parent.left
-		anchors.top: parent.top
-		columns: 1
-		rows: 3
+	Rectangle
+	{
+		anchors.margins: 5
+		anchors.fill: parent
 
-		Label {
-			id: label
-			text: qsTr("Текст водяного знака")
-			Layout.row: 1
-			Layout.column: 1
-			Layout.fillWidth: true
-		}
+		GridLayout {
+			id: gridLayout
+			height: 100
+			anchors.right: parent.right
+			anchors.left: parent.left
+			anchors.top: parent.top
+			columns: 1
+			rows: 3
 
-		TextField {
-			id: watermarkText
-			Layout.row: 1
-			Layout.column: 2
-			Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-			Layout.fillWidth: true
+			Label {
+				id: label
+				text: qsTr("Текст водяного знака")
+				Layout.row: 1
+				Layout.column: 1
+				Layout.fillWidth: true
+			}
 
-			text: settings.watermarkText
-		}
+			TextField {
+				id: watermarkText
+				Layout.row: 1
+				Layout.column: 2
+				Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+				Layout.fillWidth: true
 
-		Label {
-			id: label1
-			text: qsTr("Коэффициент размера")
-			Layout.row: 2
-			Layout.column: 1
-			Layout.fillWidth: true
-		}
+				text: settings.watermarkText
+			}
 
-		TextField {
-			id: sizeCoef
-			Layout.row: 2
-			Layout.column: 2
-			Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-			Layout.fillWidth: true
+			Label {
+				id: label1
+				text: qsTr("Коэффициент размера")
+				Layout.row: 2
+				Layout.column: 1
+				Layout.fillWidth: true
+			}
 
-			text: settings.sizeCoef
-		}
+			TextField {
+				id: sizeCoef
+				Layout.row: 2
+				Layout.column: 2
+				Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+				Layout.fillWidth: true
 
-		Label {
-			id: label2
-			text: qsTr("Шрифт")
-			Layout.row: 3
-			Layout.column: 1
-			Layout.fillWidth: true
-		}
+				text: settings.sizeCoef
+			}
 
-		ComboBox {
-			id: watermarkFont
-			Layout.row: 3
-			Layout.column: 2
-			Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-			Layout.fillWidth: true
+			Label {
+				id: label2
+				text: qsTr("Шрифт")
+				Layout.row: 3
+				Layout.column: 1
+				Layout.fillWidth: true
+			}
 
-			delegate: ItemDelegate {
-				        width: watermarkFont.width
-								contentItem: Text {
-									  text: modelData
-										font.family: modelData
-								}
-								highlighted: watermarkFont.highlightedIndex == index
-			      }
+			ComboBox {
+				id: watermarkFont
+				Layout.row: 3
+				Layout.column: 2
+				Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+				Layout.fillWidth: true
 
-			contentItem: Text {
-				  leftPadding: 0
+				delegate: ItemDelegate {
+					width: watermarkFont.width
+					contentItem: Text {
+						text: modelData
+						font.family: modelData
+					}
+					highlighted: watermarkFont.highlightedIndex == index
+				}
+
+				contentItem: Text {
+					leftPadding: 0
 					rightPadding: watermarkFont.indicator.width + watermarkFont.spacing
 
 					text: watermarkFont.displayText
 					font.family: watermarkFont.displayText
 					horizontalAlignment: Text.AlignLeft
 					verticalAlignment: Text.AlignVCenter
+				}
+
+				model: settings.availableFonts
+				currentIndex: settings.watermarkFontId
 			}
-
-			model: settings.availableFonts
-			currentIndex: settings.watermarkFontId
 		}
-	}
 
-	Button {
-		id: button
-		x: 349
-		y: 356
-		text: qsTr("Сохранить")
-		anchors.bottom: parent.bottom
-		anchors.right: parent.right
+		Button {
+			id: button
+			x: 349
+			y: 356
+			text: qsTr("Сохранить")
+			anchors.bottom: parent.bottom
+			anchors.right: parent.right
 
-		onClicked: {
-			settings.sizeCoef = sizeCoef.text;
-			settings.watermarkFontId = watermarkFont.currentIndex;
-			settings.watermarkText = watermarkText.text;
-			settings.save();
+			onClicked: {
+				settings.sizeCoef = sizeCoef.text;
+				settings.watermarkFontId = watermarkFont.currentIndex;
+				settings.watermarkText = watermarkText.text;
+				settings.save();
+			}
 		}
 	}
 }
