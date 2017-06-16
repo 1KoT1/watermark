@@ -16,7 +16,7 @@ AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={pf}\watermark
-DefaultGroupName=watermark.exe
+DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputBaseFilename=setup_watermark
 Compression=lzma
@@ -27,6 +27,7 @@ Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"
 
 [CustomMessages]
 ru.NameOfMenuItem=Добавить водяной знак
+ru.SettingsName=Настройки
 
 [Registry]
 Root: HKCR; Subkey: "Directory\shell\watermark"; ValueType: string; ValueData: "{cm:NameOfMenuItem}"; Flags: uninsdeletekey   
@@ -37,5 +38,5 @@ Source: "..\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{cm:SettingsName}"; Filename: "{app}\SettingEditor.exe"
 
