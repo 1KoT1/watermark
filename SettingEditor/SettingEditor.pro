@@ -31,3 +31,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     settings.h
+
+win32:CONFIG(release, debug|release): {
+  DESTDIR = $$PWD/../dist
+  QMAKE_POST_LINK += windeployqt --qmldir $$PWD $$DESTDIR/$$TARGET.$$TARGET_EXT
+}
